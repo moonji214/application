@@ -7,7 +7,7 @@
 						<li><a href="#"><i class="fa fa-users"></i> Home</a></li>
 						<li>게시판 관리</li>
 						<li class="active">
-						글작성
+						글작성d
 						</li>
 					</ol>
 				</section>
