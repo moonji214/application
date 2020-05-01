@@ -48,11 +48,11 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+/*$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = '';
 $db['default']['password'] = '';
-$db['default']['database'] = '';
-$db['default']['dbdriver'] = 'mysql';
+$db['default']['database'] = 'mjh';
+$db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
@@ -63,6 +63,47 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+*/
+$db['default']['dsn'] = "";
+
+$db['default']['hostname'] = "localhost";
+
+$db['default']['username'] = "root";
+
+$db['default']['password'] = "";
+
+$db['default']['database'] = "mjh";
+
+$db['default']['dbdriver'] = "mysqli";
+
+$db['default']['port'] = "3306";
+
+$db['default']['dbprefix'] = "";
+
+$db['default']['pconnect'] = FALSE;      // pconnect 값이 TRUE일 사용할 경우 웹 호스팅 환경에서는 실행이 되지 않는다.
+
+$db['default']['db_debug'] = (ENVIRONMENT !== "production");
+
+$db['default']['cache_on'] = FALSE;
+
+$db['default']['cachedir'] = "";
+
+$db['default']['char_set'] = "utf8";
+
+$db['default']['dbcollat'] = "utf8_general_ci";
+
+$db['default']['swap_pre'] = "";
+
+$db['default']['encrypt'] = FALSE;
+
+$db['default']['compress'] = FALSE;
+
+$db['default']['stricton'] = FALSE;
+
+$db['default']['failover'] = array( );
+
+$db['default']['save_queries'] = TRUE;
+
 
 
 /* End of file database.php */
