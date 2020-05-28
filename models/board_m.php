@@ -182,8 +182,6 @@ class Board_m extends CI_Model
 	    
 	    $this->db->where('b_idx', $data['b_idx']);
 	    $query = $this->db->update('board_notice', $data);
-	    
-		//$sql = 'UPDATE gb_board_notice SET b_name=?, b_phone=?, b_email=?, b_subject=?, b_content=?, b_files=? , b_reply=? WHERE b_idx=?';
 		
 	    if (! empty($query)) {
 			$return = array('result' => TRUE);
@@ -212,14 +210,22 @@ class Board_m extends CI_Model
 		return $return;
 	}
 	
+	//게시판 삭제처리 
 	public function del($data = array())
 	{
-		$sql = 'UPDATE gb_board_notice SET b_display=\'N\' WHERE b_idx=?';
+	    
+	    $data = array(
+	        'b_display' => 'N',
+	        'b_idx' => $data['b_idx']
+	    );
+	    
+	    $this->db->where('b_idx', $data['b_idx']);
+	    $query =  $this->db->update('board_notice', $data);
 		
-		if ( $this->db->query($sql, array($data['b_idx'])) ) {
+	    if (! empty($query)) {
 			$return = array('result' => TRUE);
 		} else {
-			$return = array('result' => FALSE, 'message' => '�뜲�씠�꽣踰좎씠�뒪�뿉 臾몄젣媛� �엳�뒿�땲�떎');
+			$return = array('result' => FALSE, 'message' => '데이버테이스 오류');
 		}
 		
 		return $return;

@@ -15,10 +15,10 @@ class Board extends CI_Controller
 	}
 	
 	//글로벌에프엠 게시판
-	public function lists2($board = '')
+	public function my_lists($board = '')
 	{
-		$contents = $this->load->view('/admin/board/lists2_v', array('current_board' => $board), TRUE);
-		$this->load->view('/admin/layout_v', array('contents' => $contents));
+		$contents = $this->load->view('/board/my_lists', array('current_board' => $board), TRUE);
+		$this->load->view('/layout', array('contents' => $contents));
 	}
 	
 	// 게시판 조회 

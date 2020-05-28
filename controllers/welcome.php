@@ -20,11 +20,28 @@ class Welcome extends CI_Controller {
       
     
     
-	public function index()
+	/*public function index()
 	{
 	    $contents = $this->load->view('/board/lists', array('contents' => "1"), TRUE);
 	   
 	    $this->load->view('layout' , array('contents' => $contents));
+	}*/
+	
+	public function __construct()
+	{
+	    parent::__construct();
+	    
+	    if ( $this->session->userdata('u_admin') == 'Y' ) {
+	        //header('Location:/admin/dashboard');
+	        header('Location:/board/lists');
+	        
+	        die();
+	    }
+	}
+	
+	public function index()
+	{
+	    $this->load->view('/login_v');
 	}
 }
 

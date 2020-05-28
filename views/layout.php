@@ -72,6 +72,9 @@
 							<li class="dropdown user user-menu">
 								<a href="#" class="btn-logout"><span class="hidden-xs">마이블로그</span></a>
 							</li>
+							<li class="dropdown user user-menu">
+								<a href="#" class="btn-logout"><span class="hidden-xs">로그아웃</span></a>
+							</li>
 						</ul>
 					</div>
 				</nav>
@@ -89,18 +92,38 @@
 						
 						<li class="treeview active">
 							<a href="#">
-								<i class="fa fa-users"></i> <span>게시판</span>
+								<i class="fa fa-table"></i> <span>게시판</span>
 								<i class="fa fa-angle-left pull-right"></i>
 							</a>
 							<? $base_filename = basename($_SERVER['PHP_SELF']); 
 							?>
 							<ul class="treeview-menu">
 								<li<? if ($base_filename =="lists" ||$base_filename =="view"  ) { echo ' class="active"'; } ?>><a href="/board/lists"><i class="fa fa-angle-double-right"></i>리스트</a></li>
-								<li<?  if ($base_filename =="my_lists" ||$base_filename =="my_view"  ) {echo ' class="active"'; } ?>><a href="/board/my_lists"><i class="fa fa-angle-double-right"></i>마이게시판</a></li>
+								<li<? if ($base_filename =="my_lists" ||$base_filename =="my_view"  ) {echo ' class="active"'; } ?>><a href="/board/my_lists"><i class="fa fa-angle-double-right"></i>마이게시판</a></li>
 							</ul>
 						</li>
-					
-										
+						<li class="treeview active">
+							<a href="#">
+								<i class="fa fa-users"></i> <span>사용자</span>
+								<i class="fa fa-angle-left pull-right"></i>
+							</a>
+							<? $base_filename = basename($_SERVER['PHP_SELF']); 
+							?>
+							<ul class="treeview-menu">
+								<li<? if ($base_filename =="user_lists" ||$base_filename =="user_view"  ) { echo ' class="active"'; } ?>><a href="/member/user_lists"><i class="fa fa-angle-double-right"></i>리스트</a></li>
+							</ul>
+						</li>
+						<li class="treeview active">
+							<a href="#">
+								<i class="fa fa-mortar-board"></i> <span>신청서</span>
+								<i class="fa fa-angle-left pull-right"></i>
+							</a>
+							<? $base_filename = basename($_SERVER['PHP_SELF']); 
+							?>
+							<ul class="treeview-menu">
+								<li<? if ($base_filename =="order_lists" ||$base_filename =="order_view"  ) { echo ' class="active"'; } ?>><a href="/order/order_lists"><i class="fa fa-angle-double-right"></i>리스트</a></li>
+							</ul>
+						</li>				
 					</ul>
 				</section>
 			</aside>
@@ -114,6 +137,25 @@
 				
 			</footer>
 		</div>
-		
+		<script>
+			$(function(){
+				$('.btn-logout').click(function(){
+					$.ajax({
+						url: '/api/account/logout',
+						datatype: 'json',
+						success: function(d){
+							var data = $.parseJSON(d);
+							
+							if ( data.result ) {
+								window.location.replace('/');
+							} else {
+								alert( data.message );
+							}
+						}
+					});
+				});
+			});
+			
+		</script>
 	</body>
 </html>

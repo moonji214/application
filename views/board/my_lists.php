@@ -96,7 +96,7 @@
 							
 							if ( confirm(name + ' 게시물을 삭제하시겠습니까?') ) {
 								$.ajax({
-									url: '/api/board/del',
+									url: '/admin/api/board/del',
 									type: 'post',
 									datatype: 'json',
 									data: { b_idx: idx },

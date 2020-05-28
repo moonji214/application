@@ -328,7 +328,7 @@ class Board extends CI_Controller
 		$data = $this->input->post();
 		
 		if ( ! $this->form_validation->required($data['b_idx']) ) {
-			$return = array('result' => FALSE, 'message' => '寃뚯떆臾� 肄붾뱶媛� 議댁옱�븯吏� �븡�뒿�땲�떎');
+			$return = array('result' => FALSE, 'message' => '게시글 코드가 없습니다.');
 		} else {
 			$return = $this->board->del($data);
 		}
