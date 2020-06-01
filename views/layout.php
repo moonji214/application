@@ -123,6 +123,9 @@
 							<ul class="treeview-menu">
 								<li<? if ($base_filename =="order_lists" ||$base_filename =="order_view"  ) { echo ' class="active"'; } ?>><a href="/order/order_lists"><i class="fa fa-angle-double-right"></i>리스트</a></li>
 							</ul>
+							<ul class="treeview-menu">
+								<li<? if ($base_filename =="vue_list" ||$base_filename =="vue_view"  ) { echo ' class="active"'; } ?>><a href="/order/vue_list"><i class="fa fa-angle-double-right"></i>뷰테스트</a></li>
+							</ul>
 						</li>				
 					</ul>
 				</section>
