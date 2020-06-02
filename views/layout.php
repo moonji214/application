@@ -115,6 +115,18 @@
 						</li>
 						<li class="treeview active">
 							<a href="#">
+								<i class="fa fa-table"></i> <span>메뉴설정</span>
+								<i class="fa fa-angle-left pull-right"></i>
+							</a>
+							<? $base_filename = basename($_SERVER['PHP_SELF']); 
+							?>
+							<ul class="treeview-menu">
+								<li<? if ($base_filename =="menu" ) { echo ' class="active"'; } ?>><a href="/conf/menu"><i class="fa fa-angle-double-right"></i>프로그램등록</a></li>
+							</ul>
+						</li>		
+						
+						<li class="treeview active">
+							<a href="#">
 								<i class="fa fa-mortar-board"></i> <span>신청서</span>
 								<i class="fa fa-angle-left pull-right"></i>
 							</a>
