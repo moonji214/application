@@ -17,7 +17,7 @@ class Conf_m extends CI_Model
 		$return['recordsFiltered'] = $this->cnt($data);
 		$datacount = 0;
 
-		$sql = 'SELECT m_seq, p_name, p_parent , p_type FROM menu WHERE p_use=?  ';
+		$sql = 'SELECT m_seq, p_name, p_parent , p_type , p_no FROM menu WHERE p_use=?  ';
 		array_push($query, 'Y');
 		
 		if ( ! empty($data['search']) ) {
@@ -39,7 +39,8 @@ class Conf_m extends CI_Model
 			    $return['data'][$datacount]['DT_RowId'] = $row->m_seq;
 				$return['data'][$datacount]['no'] = ++$data['start'];
 				$return['data'][$datacount]['p_name'] = $row->p_name;
-				$return['data'][$datacount]['p_parent'] = $row->p_parent;	
+				$return['data'][$datacount]['p_parent'] = $row->p_parent;
+				$return['data'][$datacount]['p_no'] = $row->p_no;
 				$return['data'][$datacount]['p_type'] = $row->p_type;
 				$datacount++;
 			}
@@ -73,6 +74,23 @@ class Conf_m extends CI_Model
 		}
 		
 		return $return;
+	}
+	
+	// 메뉴정보 가져오기
+	public function menu_view($data = array())
+	{
+	    $sql = 'SELECT m_seq, p_name , p_use , p_no , p_parent  ';
+	    $sql .='   FROM menu WHERE m_seq =? ';
+	    $query = $this->db->query($sql, $data);
+	   
+	    if ( ! empty($query) && $query->num_rows() > 0 ) {
+	        $return = $query->row_array();
+	        $return['result'] = TRUE;
+	    } else {
+	        $return = array('result' => FALSE, 'message' => '정보가 없습니다');
+	    }
+	    
+	    return $return;
 	}
 	
 

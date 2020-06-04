@@ -11,7 +11,7 @@ class Conf extends CI_Controller
 		$this->load->model('/conf_m', 'conf');
 	}
 	
-	// 리스트 
+	// 由ъ뒪�듃 
 	public function lists($board = '')
 	{
 		$tmp['columns'] = $this->input->post('columns');
@@ -39,20 +39,28 @@ class Conf extends CI_Controller
 		echo json_encode($return);
 	}
 	
+	// 메뉴정보 가져오기 
+	public function menu_view($m_seq=0)
+	{
+	    $data['m_seq'] = $m_seq;
+	    $return = $this->conf->menu_view($data);
+	    
+	    echo json_encode($return);
+	}
 	
-	// 게시판 입력 
+	// 寃뚯떆�뙋 �엯�젰 
 	public function add()
 	{
 		$data = $this->input->post();
 		
 		if ( ! $this->form_validation->required($data['b_name']) ) {
-			$return = array('result' => FALSE, 'message' => '작성자를 입력하세요.');
+			$return = array('result' => FALSE, 'message' => '�옉�꽦�옄瑜� �엯�젰�븯�꽭�슂.');
 		} elseif ( ! $this->form_validation->required($data['b_subject']) ) {
-			$return = array('result' => FALSE, 'message' => '제목을 입력하세요.');
+			$return = array('result' => FALSE, 'message' => '�젣紐⑹쓣 �엯�젰�븯�꽭�슂.');
 		} elseif ( ! $this->form_validation->required($data['b_regdate']) ) {
-		    $return = array('result' => FALSE, 'message' => '등록일을 입력하세요.');
+		    $return = array('result' => FALSE, 'message' => '�벑濡앹씪�쓣 �엯�젰�븯�꽭�슂.');
 		} elseif ( ! $this->form_validation->required($data['b_content']) ) {
-			$return = array('result' => FALSE, 'message' => '내용을 입력하세요.');
+			$return = array('result' => FALSE, 'message' => '�궡�슜�쓣 �엯�젰�븯�꽭�슂.');
 		} else {
 			
 			$data['b_files'] = array();
@@ -71,7 +79,7 @@ class Conf extends CI_Controller
 						case 'b_files' :
 							//$config['allowed_types'] = 'zip|pdf|ppt|gif|jpg|png';
 							$config['allowed_types'] = '*';
-							$title = '泥⑤��뙆�씪';
+							$title = '筌ｂ뫀占쏙옙�솁占쎌뵬';
 							break;
 					}
 					
@@ -88,7 +96,7 @@ class Conf extends CI_Controller
 									$_FILES['b_files']['size'] = $files['b_files']['size'][$key];
 									
 									if ( ! $this->upload->do_upload('b_files') ) {
-										echo json_encode(array('result' => FALSE, 'message' => $title . $key . '瑜� �뾽濡쒕뱶 �븷 �닔 �뾾�뒿�땲�떎.' . $this->upload->display_errors()));
+										echo json_encode(array('result' => FALSE, 'message' => $title . $key . '�몴占� 占쎈씜嚥≪뮆諭� 占쎈막 占쎈땾 占쎈씨占쎈뮸占쎈빍占쎈뼄.' . $this->upload->display_errors()));
 										exit;
 									} else {
 										$tmp = $this->upload->data();
@@ -111,20 +119,20 @@ class Conf extends CI_Controller
 		echo json_encode($return);
 	}
 	
-	//게시글 수정 
+	//寃뚯떆湲� �닔�젙 
 	public function set()
 	{
 		$data = $this->input->post();
 		
 		
 		if ( ! $this->form_validation->required($data['b_idx']) ) {
-			$return = array('result' => FALSE, 'message' => '게시물 코드를 확인하세요.');
+			$return = array('result' => FALSE, 'message' => '寃뚯떆臾� 肄붾뱶瑜� �솗�씤�븯�꽭�슂.');
 		}  elseif ( ! $this->form_validation->required($data['b_name']) ) {
-			$return = array('result' => FALSE, 'message' => '작성자를 입려하세요.');
+			$return = array('result' => FALSE, 'message' => '�옉�꽦�옄瑜� �엯�젮�븯�꽭�슂.');
 		} elseif ( ! $this->form_validation->required($data['b_subject']) ) {
-			$return = array('result' => FALSE, 'message' => '제목을 입력하세요.');
+			$return = array('result' => FALSE, 'message' => '�젣紐⑹쓣 �엯�젰�븯�꽭�슂.');
 		} elseif ( ! $this->form_validation->required($data['b_content']) ) {
-			$return = array('result' => FALSE, 'message' => '내용을 확인하세요.');
+			$return = array('result' => FALSE, 'message' => '�궡�슜�쓣 �솗�씤�븯�꽭�슂.');
 		} else {
 			
 			
@@ -144,7 +152,7 @@ class Conf extends CI_Controller
 						case 'b_files' :
 							//$config['allowed_types'] = 'zip|pdf|ppt|gif|jpg|png';
 							$config['allowed_types'] = '*';
-							$title = '파일';
+							$title = '�뙆�씪';
 							break;
 					}
 					
@@ -161,7 +169,7 @@ class Conf extends CI_Controller
 									$_FILES['b_files']['size'] = $files['b_files']['size'][$key];
 									
 									if ( ! $this->upload->do_upload('b_files') ) {
-										echo json_encode(array('result' => FALSE, 'message' => $title . $key . '瑜� �뾽濡쒕뱶 �븷 �닔 �뾾�뒿�땲�떎.' . $this->upload->display_errors()));
+										echo json_encode(array('result' => FALSE, 'message' => $title . $key . '�몴占� 占쎈씜嚥≪뮆諭� 占쎈막 占쎈땾 占쎈씨占쎈뮸占쎈빍占쎈뼄.' . $this->upload->display_errors()));
 										exit;
 									} else {
 										$tmp = $this->upload->data();
@@ -205,7 +213,7 @@ class Conf extends CI_Controller
 		echo json_encode($return);
 	}
 	
-	//湲�濡쒕쾶�뿉�봽�뿞 寃뚯떆�뙋 異붽�
+	//疫뀐옙嚥≪뮆苡띰옙肉됵옙遊쏙옙肉� 野껊슣�뻻占쎈솇 �빊遺쏙옙
 	
 	
 	
@@ -215,7 +223,7 @@ class Conf extends CI_Controller
 		$data = $this->input->post();
 		
 		if ( ! $this->form_validation->required($data['b_idx']) ) {
-			$return = array('result' => FALSE, 'message' => '게시글 코드가 없습니다.');
+			$return = array('result' => FALSE, 'message' => '寃뚯떆湲� 肄붾뱶媛� �뾾�뒿�땲�떎.');
 		} else {
 			$return = $this->board->del($data);
 		}
