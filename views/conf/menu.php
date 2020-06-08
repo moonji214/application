@@ -39,7 +39,7 @@
 									</table>
 									<!--  내용 시작 -->
 									<form id="menu-form" class="form-horizontal" >
-									<input type="hidden" name="form_status" id="form_status" value="" />
+									<input type="hidden" name="form_status" id="form_status" value="save" />
 									<input type="hidden" name="m_seq"  id="m_seq"  value="" />
 									<div class="box form-horizontal" >
     									<div class="box-body">
@@ -76,10 +76,25 @@
         									<div class="row">
         										<div class="col-xs-10">
         											<div class="form-group">
+        											<label class="col-xs-3 control-label">뎁스</label>
+        												<div class="col-xs-2 col-sm-3 col-md-3">
+        												<select name="p_depth" id="p_depth" class="form-control">
+															<option value="0" selected>상위</option>
+															<option value="1">1</option>
+															<option value="2">2</option>
+														</select>
+														</div>
+													</div>
+        										</div>
+        									</div>		
+														
+        									<div class="row">
+        										<div class="col-xs-10">
+        											<div class="form-group">
         												<label class="col-xs-3 control-label">사용여부</label>
         													<div class="col-xs-5">
         														<input type="radio" name="p_use" id="p_use" value="Y" /><label for="n">사용</label>
-        														<input type="radio" name="p_use" id="p_use" value="N" /><label for="n">미사용</label>
+        														<input type="radio" name="p_use" id="p_nuse" value="N" /><label for="n">미사용</label>
         													</div>
         											</div>
         										</div>
@@ -161,12 +176,12 @@
 											$('#menu-form').find('#p_parent').val(data.p_parent);	//부모메뉴
 											$('#menu-form').find('#form_status').val("save");
 											$('#menu-form').find('#p_no').val(data.p_no);	//정렬넘버
-											//$('#menu-form').find('#p_use').val(data.p_use);	//湲곗�肄붾뱶
+											$('#menu-form').find('#p_depth').prop("checked", true);
 											
 											if (data.p_use == 'Y'){
 												$('#menu-form').find('#p_use').prop("checked", true);
 											}else{
-												$('#menu-form').find('#p_use').prop("checked", false);
+												$('#menu-form').find('#p_nuse').prop("checked", true);
 											}
 										//	$('#item-modify-form').find('#bigo').val(data.bigo);					
 																											
@@ -186,21 +201,18 @@
 
 						$('#menu-form').submit(function(d){
 							d.preventDefault();
-					// 留뚯빟 �떊洹쒗룷�옣�떒�쐞 �씪硫�..
+					// 저장 버튼 클릭시 
 							switch ( $('#form_status').val() ) {
-								case 'save' :
-									datasave();
-								break;
-
+								
 								case 'send' :
 									datasend();
 								break;
 
 								
-								case 'insert' :
+								case 'save' :
 								// 
-										$('#item-modify-form').ajaxSubmit({
-											url: '/api/quarter_manu/pack_insert',
+										$('#menu-form').ajaxSubmit({
+											url: '/api/conf/menu_save',
 											type: 'post',
 											datatype: 'json',
 											error: function(e) { return false; },

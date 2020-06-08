@@ -7,7 +7,7 @@ class Conf_m extends CI_Model
 		parent::__construct();
 	}
 	
-	// ¸Ş´º ¸®½ºÆ® Äõ¸® 
+	// ë©”ë‰´ ë¦¬ìŠ¤íŠ¸ ì¿¼ë¦¬ 
 	public function lists($data = array())
 	{
 		$return = array();
@@ -52,7 +52,7 @@ class Conf_m extends CI_Model
 		return $return;
 	}
 	
-	//¸Ş´º ¸®½ºÆ® Ä«¿îÆ® 
+	//ë©”ë‰´ ë¦¬ìŠ¤íŠ¸ ì¹´ìš´íŠ¸ 
 	private function cnt($data = array())
 	{
 		$return = 0;
@@ -76,7 +76,7 @@ class Conf_m extends CI_Model
 		return $return;
 	}
 	
-	// ¸Ş´ºÁ¤º¸ °¡Á®¿À±â
+	// ë©”ë‰´ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	public function menu_view($data = array())
 	{
 	    $sql = 'SELECT m_seq, p_name , p_use , p_no , p_parent  ';
@@ -87,14 +87,54 @@ class Conf_m extends CI_Model
 	        $return = $query->row_array();
 	        $return['result'] = TRUE;
 	    } else {
-	        $return = array('result' => FALSE, 'message' => 'Á¤º¸°¡ ¾ø½À´Ï´Ù');
+	        $return = array('result' => FALSE, 'message' => 'ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤');
 	    }
 	    
 	    return $return;
 	}
 	
-
-	// °Ô½ÃÆÇ ÀÔ·Â ÀúÀå
+    // ë©”ë‰´ ì €ì¥ 
+	public function menu_save($data = array())
+	{
+	   // ë§Œì•½ ìˆ˜ì •ì´ë¼ë©´ 
+	   if (!empty($data['m_seq'])) {
+	       $data = array(
+	           'm_seq'     => $data['m_seq'],
+	           'p_name'    => $data['p_name'],
+	           'p_parent'  => $data['p_parent'],
+	           'p_no'      => $data['p_no'],
+	           'p_use'     => $data['p_use']
+	       );
+	       $this->db->where('m_seq', $data['m_seq']);
+	       $query = $this->db->update('menu', $data);
+	       
+	       if (! empty($query)) {
+	           $return = array('result' => TRUE);
+	       } else {
+	           $return = array('result' => FALSE, 'message' => 'ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¥˜');
+	       }
+	   // ê·¸ì™¸ì— ì‹ ê·œ ì €ì¥ì´ë¼ë©´      
+	   } else {
+	       $data = array(
+	           'p_name'    => $data['p_name'],
+	           'p_parent'  => $data['p_parent'],
+	           'p_no'      => $data['p_no'],
+	           'p_use'     => $data['p_use']
+	       );
+	       $query = $this->db->insert('menu', $data);
+	       
+	       if (! empty($query)) {
+	           $return = array('result' => TRUE);
+	       } else {
+	           $return = array('result' => FALSE, 'message' => 'ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¥˜');
+	       }
+	   }
+	    
+	    
+	    return $return;
+	}
+	
+	// ê²Œì‹œíŒ ì…ë ¥ ì €ì¥
 	public function add($data = array())
 	{
 	    $data = array(
@@ -113,13 +153,13 @@ class Conf_m extends CI_Model
 	    if (! empty($query)) {
 			$return = array('result' => TRUE);
 		} else {
-			$return = array('result' => FALSE, 'message' => 'µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù');
+			$return = array('result' => FALSE, 'message' => 'ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¥˜');
 		}
 		
 		return $return;
 	}
 	
-	// °Ô½ÃÆÇ ¼öÁ¤
+	// ê²Œì‹œíŒ ìˆ˜ì •
 	public function set($data = array())
 	{
 	    $data = array(
@@ -136,13 +176,13 @@ class Conf_m extends CI_Model
 	    if (! empty($query)) {
 			$return = array('result' => TRUE);
 		} else {
-			$return = array('result' => FALSE, 'message' => 'µ¥ÀÌÅÍº£ÀÌ½º ¿À·ù');
+			$return = array('result' => FALSE, 'message' => 'ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¥˜');
 		}
 		
 		return $return;
 	}
 	
-	// °Ô½ÃÆÇ Á¶È¸
+	// ê²Œì‹œíŒ ì¡°íšŒ
 	public function get($data = array())
 	{
 	    
@@ -160,7 +200,7 @@ class Conf_m extends CI_Model
 		return $return;
 	}
 	
-	//°Ô½ÃÆÇ »èÁ¦Ã³¸® 
+	//ê²Œì‹œíŒ ì‚­ì œì²˜ë¦¬ 
 	public function del($data = array())
 	{
 	    
@@ -175,7 +215,7 @@ class Conf_m extends CI_Model
 	    if (! empty($query)) {
 			$return = array('result' => TRUE);
 		} else {
-			$return = array('result' => FALSE, 'message' => 'µ¥ÀÌ¹öÅ×ÀÌ½º ¿À·ù');
+			$return = array('result' => FALSE, 'message' => 'ë°ì´ë²„í…Œì´ìŠ¤ ì˜¤ë¥˜');
 		}
 		
 		return $return;

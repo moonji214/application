@@ -48,76 +48,33 @@ class Conf extends CI_Controller
 	    echo json_encode($return);
 	}
 	
-	// 寃뚯떆�뙋 �엯�젰 
-	public function add()
+	// 메뉴저장 
+	public function menu_save()
 	{
-		$data = $this->input->post();
-		
-		if ( ! $this->form_validation->required($data['b_name']) ) {
-			$return = array('result' => FALSE, 'message' => '�옉�꽦�옄瑜� �엯�젰�븯�꽭�슂.');
-		} elseif ( ! $this->form_validation->required($data['b_subject']) ) {
-			$return = array('result' => FALSE, 'message' => '�젣紐⑹쓣 �엯�젰�븯�꽭�슂.');
-		} elseif ( ! $this->form_validation->required($data['b_regdate']) ) {
-		    $return = array('result' => FALSE, 'message' => '�벑濡앹씪�쓣 �엯�젰�븯�꽭�슂.');
-		} elseif ( ! $this->form_validation->required($data['b_content']) ) {
-			$return = array('result' => FALSE, 'message' => '�궡�슜�쓣 �엯�젰�븯�꽭�슂.');
-		} else {
-			
-			$data['b_files'] = array();
-			if ( ! empty($_FILES['b_files']) ) {
-				$this->load->library('upload');
-				$config['upload_path'] = './uploads/board_' . $data['bc_code'];
-				$config['encrypt_name'] = TRUE;
-				
-				if ( ! is_dir($config['upload_path']) ) {
-					mkdir($config['upload_path'], 0777);
-				}
-				
-				$files = $_FILES;
-				foreach ( $_FILES as $key => $val ) {
-					switch ( $key ) {
-						case 'b_files' :
-							//$config['allowed_types'] = 'zip|pdf|ppt|gif|jpg|png';
-							$config['allowed_types'] = '*';
-							$title = '筌ｂ뫀占쏙옙�솁占쎌뵬';
-							break;
-					}
-					
-					$this->upload->initialize($config);
-					
-					switch ( $key ) {
-						case 'b_files' :
-							foreach ( $_FILES['b_files']['name'] as $key => $val ) {
-								if ( ! empty($val) ) {
-									$_FILES['b_files']['name'] = $files['b_files']['name'][$key];
-									$_FILES['b_files']['type'] = $files['b_files']['type'][$key];
-									$_FILES['b_files']['tmp_name'] = $files['b_files']['tmp_name'][$key];
-									$_FILES['b_files']['error'] = $files['b_files']['error'][$key];
-									$_FILES['b_files']['size'] = $files['b_files']['size'][$key];
-									
-									if ( ! $this->upload->do_upload('b_files') ) {
-										echo json_encode(array('result' => FALSE, 'message' => $title . $key . '�몴占� 占쎈씜嚥≪뮆諭� 占쎈막 占쎈땾 占쎈씨占쎈뮸占쎈빍占쎈뼄.' . $this->upload->display_errors()));
-										exit;
-									} else {
-										$tmp = $this->upload->data();
-										$data['b_files'][$key]['original_name'] = $tmp['orig_name'];
-										$data['b_files'][$key]['name'] = $tmp['file_name'];
-										$data['b_files'][$key]['size'] = $tmp['file_size'];
-										$data['b_files'][$key]['ext'] = $tmp['file_ext'];
-									}
-								}
-							}
-							break;
-					}
-				}
-			}
-			$data['b_files'] = serialize($data['b_files']);
-			
-			$return = $this->board->add($data);
-		}
-		
-		echo json_encode($return);
+	    $data = $this->input->post();
+	  	   
+	    if (empty($data['p_use'])){ 
+	        $data['p_use']='Y' ;
+	    }
+	    
+	    if ( ! $this->form_validation->required($data['p_name']) ) {
+	        $return = array('result' => FALSE, 'message' => '프로그램을 입력하세요.');
+	    } elseif ( ! $this->form_validation->required($data['p_parent']) ) {
+	        $return = array('result' => FALSE, 'message' => '메뉴명을 입력하세요');
+	    } elseif ( ! $this->form_validation->required($data['p_no']) ) {
+	        $return = array('result' => FALSE, 'message' => '정렬 순서를 입력하세요.');
+	    } elseif ( ! $this->form_validation->required($data['p_use']) ) {
+	        $return = array('result' => FALSE, 'message' => '사용여부를 선택하세요');
+	    } elseif ( $this->session->userdata('id') == '0' ) {
+	        $return = array('result' => FALSE, 'message' => '로그인 정보가 없습니다.');
+	        redirect('/');
+	    } else {
+	        $return = $this->conf->menu_save($data);
+	    }
+	    
+	    echo json_encode($return);
 	}
+	
 	
 	//寃뚯떆湲� �닔�젙 
 	public function set()
