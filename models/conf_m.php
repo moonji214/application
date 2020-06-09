@@ -17,7 +17,7 @@ class Conf_m extends CI_Model
 		$return['recordsFiltered'] = $this->cnt($data);
 		$datacount = 0;
 
-		$sql = 'SELECT m_seq, p_name, p_parent , p_type , p_no FROM menu WHERE p_use=?  ';
+		$sql = 'SELECT m_seq, p_name, p_parent , p_type , p_no , p_depth FROM menu WHERE p_use=?  ';
 		array_push($query, 'Y');
 		
 		if ( ! empty($data['search']) ) {
@@ -42,6 +42,7 @@ class Conf_m extends CI_Model
 				$return['data'][$datacount]['p_parent'] = $row->p_parent;
 				$return['data'][$datacount]['p_no'] = $row->p_no;
 				$return['data'][$datacount]['p_type'] = $row->p_type;
+				$return['data'][$datacount]['p_depth'] = $row->p_depth;
 				$datacount++;
 			}
 		} else {
@@ -79,7 +80,7 @@ class Conf_m extends CI_Model
 	// 메뉴정보 가져오기
 	public function menu_view($data = array())
 	{
-	    $sql = 'SELECT m_seq, p_name , p_use , p_no , p_parent  ';
+	    $sql = 'SELECT m_seq, p_name , p_use , p_no , p_depth , p_parent  ';
 	    $sql .='   FROM menu WHERE m_seq =? ';
 	    $query = $this->db->query($sql, $data);
 	   
@@ -96,6 +97,7 @@ class Conf_m extends CI_Model
     // 메뉴 저장 
 	public function menu_save($data = array())
 	{
+	   
 	   // 만약 수정이라면 
 	   if (!empty($data['m_seq'])) {
 	       $data = array(
@@ -103,6 +105,7 @@ class Conf_m extends CI_Model
 	           'p_name'    => $data['p_name'],
 	           'p_parent'  => $data['p_parent'],
 	           'p_no'      => $data['p_no'],
+	           'p_depth'   => $data['p_depth'],
 	           'p_use'     => $data['p_use']
 	       );
 	       $this->db->where('m_seq', $data['m_seq']);
@@ -119,6 +122,7 @@ class Conf_m extends CI_Model
 	           'p_name'    => $data['p_name'],
 	           'p_parent'  => $data['p_parent'],
 	           'p_no'      => $data['p_no'],
+	           'p_depth'   => $data['p_depth'],
 	           'p_use'     => $data['p_use']
 	       );
 	       $query = $this->db->insert('menu', $data);

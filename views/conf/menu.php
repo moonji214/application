@@ -79,7 +79,7 @@
         											<label class="col-xs-3 control-label">뎁스</label>
         												<div class="col-xs-2 col-sm-3 col-md-3">
         												<select name="p_depth" id="p_depth" class="form-control">
-															<option value="0" selected>상위</option>
+															<option value="0">상위</option>
 															<option value="1">1</option>
 															<option value="2">2</option>
 														</select>
@@ -151,7 +151,8 @@
 						 // 신규등록 클릭시
 								$('.btn-menu-add').click(function(e){
 									e.preventDefault();
-									$('#menu-form')[0].reset();	
+									$('#menu-form')[0].reset();
+									 $('#m_seq').val('');	
 								});
 								
 					//  메뉴클릭시 메뉴정보 가져옴		
@@ -176,7 +177,12 @@
 											$('#menu-form').find('#p_parent').val(data.p_parent);	//부모메뉴
 											$('#menu-form').find('#form_status').val("save");
 											$('#menu-form').find('#p_no').val(data.p_no);	//정렬넘버
-											$('#menu-form').find('#p_depth').prop("checked", true);
+											
+											if (data.p_depth == '1'){
+												$("#p_depth").val("1").prop("selected", true);
+											}else {
+												$("#p_depth").val("2").prop("selected", true);
+											}
 											
 											if (data.p_use == 'Y'){
 												$('#menu-form').find('#p_use').prop("checked", true);

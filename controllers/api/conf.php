@@ -65,6 +65,8 @@ class Conf extends CI_Controller
 	        $return = array('result' => FALSE, 'message' => '정렬 순서를 입력하세요.');
 	    } elseif ( ! $this->form_validation->required($data['p_use']) ) {
 	        $return = array('result' => FALSE, 'message' => '사용여부를 선택하세요');
+	    } elseif ( ! $this->form_validation->required($data['p_depth']) ) {
+	        $return = array('result' => FALSE, 'message' => '뎁스를 선택하세요');
 	    } elseif ( $this->session->userdata('id') == '0' ) {
 	        $return = array('result' => FALSE, 'message' => '로그인 정보가 없습니다.');
 	        redirect('/');
