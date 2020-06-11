@@ -16,27 +16,36 @@
 					</ol>
 				</section>
 				<section class="content">
+				<div id="example" class="container layout1">
+					<p><input type="text" v-model="amount"  class="form-control" /> </p>
+					<p>
+						<button id="deposit" v-on:click="balance += parseInt(amount)"  class="btn btn-primary" >예금</button>
+						<button id="withdraw" v-on:click="balance -= parseInt(amount)" class="btn btn-primary">인출</button>
+					</p>
+					<h3>계좌잔고 : {{balance}}</h3>
+				</div>
+				
 					<main>
-    <div class="container">
-        <h1>Stories</h1>
-        <div id="v-app">
-            <table class="table table-striped">
-                <tr>
-                    <th>#</th>
-                    <th>Plot</th>
-                    <th>Writer</th>
-                    <th>Upvotes</th>
-                    <th>Actions</th>
-                </tr>
-                <tr v-for="story in stories" :key="story.id" is="story" :story="story"></tr>
-            </table>
-            <p class="lead">Here's a list of all your stories.
-                <button @click="createStory()" class="btn btn-primary">Add a new one?</button>
-            </p>
-            <pre>{{ $data }}</pre>
-        </div>
-    </div>
-</main>
+                        <div class="container">
+                            <h1>Stories</h1>
+                            <div id="v-app">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Plot</th>
+                                        <th>Writer</th>
+                                        <th>Upvotes</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    <tr v-for="story in stories" :key="story.id" is="story" :story="story"></tr>
+                                </table>
+                                <p class="lead">Here's a list of all your stories.
+                                    <button @click="createStory()" class="btn btn-primary">Add a new one?</button>
+                                </p>
+                                <pre>{{ $data }}</pre>
+                            </div>
+                        </div>
+                    </main>
 <template id="template-story-raw">
     <tr>
         <td>
@@ -80,8 +89,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.7.0/vue-resource.js"></script>
 <script src='/js/app.js' type="text/javascript"></script>
+<script src='https://unpkg.com/vue/dist/vue.min.js' ></script>
 <!--  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>	-->							
 <script type="text/javascript">
+var wm = new Vue({
+	el : "#example",
+	data : {
+		amount  : 0 ,
+		balance : 0 ,
+	}
+	
+})
 
 Vue.component('story', {
     template: '#template-story-raw',
@@ -94,7 +112,7 @@ Vue.component('story', {
         },
         upvoteStory: function (story) {
             story.upvotes++;
-            this.$http.patch('/api/stories/' + story.id, story)
+            this.$http.patch('/api/order/lists' , story)
         },
         editStory: function (story) {
             story.editing = true;
@@ -140,7 +158,7 @@ new Vue({
         },
         fetchStories: function () {
             var vm = this;
-            this.$http.get('/api/conf/del')
+            this.$http.get('/api/order/listsd')
                 .then(function (response) {
                     // set data on vm
                     var storiesReady = response.data.map(function (story) {

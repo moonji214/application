@@ -179,6 +179,8 @@ class Conf extends CI_Controller
 	
 	public function del()
 	{
+	    echo "fdfd";
+	    exit;
 		$data = $this->input->post();
 		
 		if ( ! $this->form_validation->required($data['b_idx']) ) {

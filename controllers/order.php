@@ -55,6 +55,23 @@ class Order extends CI_Controller
 	}
 	
 	
+	public function vue_list2()
+	{
+	    $searchForm = $this->input->post();
+	    
+	    $this->load->model('/order_m', 'order');
+	    
+	    
+	    $request = $this->order->lists();
+	    $searchForm['action_url']   = '/order/vue_list2';
+	    
+	    $contents = $this->load->view('/order/vue_list2', array('request' => $request, 'searchForm' => $searchForm), TRUE);
+	    //$contents .= $this->load->view('/pagelist/pagelist_v', '', TRUE);
+	    
+	    $this->load->view('/layout', array('contents' => $contents));
+	}
+	
+	
 	// 사용자 정보 조회 
 	public function user_view($idx = 0)
 	{   
