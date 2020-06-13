@@ -4,6 +4,8 @@
 					.table td, th { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 					.btn-modify:hover { color: #00a65a; }
 					.btn-delete:hover { color: #dd4b39; }
+					.dataTables_empty {     text-align: center; }
+					.dataTables_paginate paging_simple_numbers {     text-align: center; }
 				</style>
 				<section class="content-header">
 					<h1>
@@ -21,22 +23,40 @@
 						<div class="col-xs-6">
 							<div class="box">
 								<div class="box-body">
-									<table id="board-list" class="table table-bordered table-striped">
-										<colgroup>
-											<col width="15%" />
-											<col width="43%"/>
-											<col width="25%" />
-											<col width="17%" />
-										</colgroup>
-										<thead>
-											<tr>
-												<th class="text-center">번호</th>
-												<th class="text-center">프로그램명</th>
-												<th class="text-center">메뉴</th>	
-												<th class="text-center">정렬순서</th>	
-											</tr>
-										</thead>
-									</table>
+									<div class="row" style="padding-top: 30px;">
+    									<label class="radio-inline"> 
+    									<select name="pg_kind" class="pg_kind">
+    													<option value="" selected>프로그램</option>
+    													<option value="영업">영업</option>
+    													<option value="인사">인사</option>
+    													<option value="회계">회계</option>
+    													<option value="설정">설정</option>
+    											</select>
+    											</label> <label class="radio-inline">
+    											 <select name="menu_kind" class="menu_kind">
+    													<option value="" selected>메뉴</option>
+    													<option value="근태">근태</option>
+    													<option value="인사카드">인사카드</option>
+    													<option value="대차대조표">대차대조표</option>
+    											</select>
+    											</label>
+    									<table id="board-list" class="table table-bordered table-striped">
+    										<colgroup>
+    											<col width="15%" />
+    											<col width="43%"/>
+    											<col width="25%" />
+    											<col width="17%" />
+    										</colgroup>
+    										<thead>
+    											<tr>
+    												<th class="text-center">번호</th>
+    												<th class="text-center">프로그램명</th>
+    												<th class="text-center">메뉴</th>	
+    												<th class="text-center">정렬순서</th>	
+    											</tr>
+    										</thead>
+    									</table>
+									</div>
 									<!--  내용 시작 -->
 									<form id="menu-form" class="form-horizontal" >
 									<input type="hidden" name="form_status" id="form_status" value="save" />
@@ -49,6 +69,7 @@
         													<label class="col-xs-3 control-label">프로그램명</label>
         													<div class="col-md-9">
         														<input type="text" class="form-control" id="p_name" name="p_name"  placeholder="프로그램명을 입력해주세요." />
+            														<div class="btn-members-modal btn btn-info">프로그램 찾기</div>
         													</div>
         												</div>
         											</div>
@@ -112,6 +133,9 @@
 							</div>
 						</div>
 					</div>
+					
+					
+		
 				</section>
 				<script type="text/javascript">
 					$(function(){
@@ -119,6 +143,7 @@
 							'language': {
 								'url': 'http://cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Korean.json'
 							},
+							"dom": 'lfrtip',  // 셀렉트박스 위치 변경
 							'processing': true,
 							'serverSide': true,
 							'bAutoWidth': false,
@@ -154,6 +179,26 @@
 									$('#menu-form')[0].reset();
 									 $('#m_seq').val('');	
 								});
+
+								//프로그램 검색한 경우
+								$(".pg_kind").change(function(){
+									table.columns(1)
+							        	.search( ''+$(this).val() )
+							        	.draw();
+								});
+
+
+								//메뉴별 검색한 경우
+								$(".menu_kind").click(function(){
+									table.columns(2)
+							        	.search( ''+$(this).val() )
+							        	.draw();
+								});
+
+
+								$('.btn-members-modal').click(function(){
+									$('#modal-member-add').modal('toggle');
+								})
 								
 					//  메뉴클릭시 메뉴정보 가져옴		
 						$('#board-list tbody').on('click', '.board', function(){
@@ -258,6 +303,55 @@
 							}
 						})
 						
+						// 모달 정보 가져옴 
+						var table0=$("#pharmacy-list").dataTable({
+							'language': {
+								'url': 'http://cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Korean.json'
+							},
+							
+							'processing': true,
+							'serverSide': true,
+							'bAutoWidth': true,
+							'responsive': true,
+							'info': false,
+							'bLengthChange': false,
+							'ajax': {
+								'url': '/api/conf/get_menu',
+								'type': 'post'
+							},
+							'pageLength': 10,
+							"order": [[ 0, 'DESC' ]],
+							'aoColumns': [
+								{ 'bSortable': false, 'sName': 'no', 'data': 'no', 'sClass': 'b_idx text-center' },
+								{ 'bSortable': false, 'sName': 'p_name', 'data': 'p_name', 'sClass': 'p_name text-center' }
+								//{ 'bSortable': false, 'sName': 'b_idx', 'data': 'b_ceo', 'sClass': 'b_ceo text-center' },
+								//{ 'bSortable': false, 'sName': 'b_idx', 'data': 'b_tel', 'sClass': 'b_tel text-center' }
+								
+							]
+						});
+						
+						$('#pharmacy-list tbody').on('mouseover', 'td', function(){
+							$(this).parent().addClass('highlight');
+						}).on('mouseleave', 'td', function(){
+							$(this).parent().removeClass('highlight');
+						});
+						// modal 클릭시 닫히고 값 매칭
+						$("body").on("click", ".p_name", function(){
+							var p_name = $(this).text();
+							if(p_name){
+								$("#p_name").val(p_name);
+							}
+							$('#modal-member-add').modal('hide');
+						}); 
+						
+						
+						$('#pharmacy-list tbody').on('click', 'tr', function(){
+											
+							$('.company').append(html);
+							$('#modal-member-add').modal('toggle');
+
+						
+						});
 						
 					});
 				</script>

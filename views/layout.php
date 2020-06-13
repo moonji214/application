@@ -12,7 +12,6 @@
 		<link href="/assets/plugin/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/plugin/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/plugin/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-		<link href="//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/plugin/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<!-- <link href="/assets/plugin/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" /> -->
 		<link href="/assets/style/AdminLTE.css" rel="stylesheet" type="text/css" />
@@ -147,6 +146,9 @@
 			</aside>
 			<div class="content-wrapper">
 				<?=$contents?>
+				<? if ( $base_filename =="menu"){?>
+					<?=$modal?>
+				<?}?>
 			</div>
 			<footer class="main-footer">
 				<div class="pull-right hidden-xs">

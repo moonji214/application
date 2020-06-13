@@ -11,7 +11,8 @@ class Conf extends CI_Controller
 	public function menu($menu = '')
 	{
 		$contents = $this->load->view('/conf/menu', array('current' => $menu), TRUE);
-		$this->load->view('/layout', array('contents' => $contents));
+		$modal = $this->load->view('/modal/conf_modal', array('modal' => $menu), TRUE);
+		$this->load->view('/layout', array('contents' => $contents , 'modal' => $modal));
 	}
 	
 	//±Û·Î¹ú¿¡ÇÁ¿¥ °Ô½ÃÆÇ

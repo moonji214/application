@@ -17,6 +17,20 @@ class Conf extends CI_Controller
 		$tmp['columns'] = $this->input->post('columns');
 		$tmp['search'] = $this->input->post('search');
 		
+		
+		$searchtmp = array();
+		if ( ! empty($tmp['columns']) ) {
+		    $i = 0;
+		    foreach ( $tmp['columns'] as $key => $val ) {
+		        if ( $val['search']['value'] != '' ) {
+		            $searchtmp['search_columns'][$i]['column'] = $val['name'];
+		            $searchtmp['search_columns'][$i]['value'] = $val['search']['value'];
+		            $i++;
+		        }
+		    }
+		}
+		
+		
 		if ( ! empty($tmp['search']['value']) && $tmp['search'] !== '' ) {
 			$data['search'] = $tmp['search']['value'];
 		}
@@ -30,6 +44,9 @@ class Conf extends CI_Controller
 		
 		$data['board'] = $board;
 		$data['order'] = implode(', ', $subtmp['columns']);
+		if(! empty($searchtmp['search_columns'])){
+		    $data['search_column']= $searchtmp['search_columns'];
+		}
 		$data['draw'] = $this->input->post('draw');
 		$data['start'] = $this->input->post('start');
 		$data['length'] = $this->input->post('length');
@@ -77,6 +94,33 @@ class Conf extends CI_Controller
 	    echo json_encode($return);
 	}
 	
+	// 프로그램 조회 
+	public function get_menu()
+	{
+	   
+	    $tmp['columns'] = $this->input->post('columns');
+	    $tmp['search'] = $this->input->post('search');
+	    
+	    if ( ! empty($tmp['search']['value']) && $tmp['search'] !== '' ) {
+	        $data['search'] = $tmp['search']['value'];
+	    }
+	    
+	    $tmp['order'] = $this->input->post('order');
+	    if ( ! empty($tmp['order']) ) {
+	        foreach ( $tmp['order'] as $key => $val ) {
+	            $subtmp['columns'][] = $tmp['columns'][$val['column']]['name'] . ' ' . $val['dir'];
+	        }
+	    }
+	    
+	    $data['order'] = implode(', ', $subtmp['columns']);
+	    $data['draw'] = $this->input->post('draw');
+	    $data['start'] = $this->input->post('start');
+	    $data['length'] = $this->input->post('length');
+	    
+	    $return = $this->conf->get_menu($data);
+	    
+	    echo json_encode($return);
+	}
 	
 	//寃뚯떆湲� �닔�젙 
 	public function set()

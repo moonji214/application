@@ -17,8 +17,15 @@ class Conf_m extends CI_Model
 		$return['recordsFiltered'] = $this->cnt($data);
 		$datacount = 0;
 
+		
 		$sql = 'SELECT m_seq, p_name, p_parent , p_type , p_no , p_depth FROM menu WHERE p_use=?  ';
 		array_push($query, 'Y');
+		
+		if(! empty($data['search_column'])){
+		    foreach ( $data['search_column'] as $key => $val ) {
+		        $sql .= ' AND '.$data['search_column'][$key]['column'].' = \''.$data['search_column'][$key]['value'].'\' ';
+		    }
+		}
 		
 		if ( ! empty($data['search']) ) {
 			$sql .= ' AND (p_name LIKE ? OR p_parent LIKE ?)';
@@ -137,6 +144,68 @@ class Conf_m extends CI_Model
 	    
 	    return $return;
 	}
+	
+	// 프로그램 조회
+	public function get_menu($data = array())
+	{
+	    $return = array();
+	    $query = array();
+	    $return['draw'] = $data['draw'];
+	    $return['recordsTotal'] = $this->menu_cnt();
+	    $return['recordsFiltered'] = $this->menu_cnt($data);
+	    $datacount = 0;
+	    
+	    $sql = 'SELECT p_name , m_seq , p_no FROM menu WHERE p_use =\'Y\' ';
+	    
+	    if ( ! empty($data['search']) ) {
+	        $sql .= ' AND (p_name LIKE ? OR p_parent LIKE ? )';
+	        array_push($query, '%' . $data['search'] . '%', '%' . $data['search'] . '%' );
+	    }
+	    $sql .= ' ORDER BY  m_seq ASC ';
+	    $sql .= ' LIMIT ?, ?';
+	    array_push($query, (int)$data['start'], (int)$data['length']);
+	    $query = $this->db->query($sql, $query);
+	    
+	    if ( ! empty($query) && $query->num_rows() > 0 ) {
+	        foreach ($query->result() as $row)
+	        {
+	            $return['data'][$datacount]['DT_RowId'] = $row->m_seq;
+	            $return['data'][$datacount]['no'] =  (++$data['start']);
+	            $return['data'][$datacount]['p_name'] = $row->p_name;
+	            $return['data'][$datacount]['p_no'] = $row->p_no;            
+	            $datacount++;
+	        }
+	    } else {
+	        $return['data'] = array();
+	        $return['recordsFiltered'] = 0;
+	    }
+	    
+	    return $return;
+	}
+	
+	// 프로그램 가져오기 
+	private function menu_cnt($data = array())
+	{
+	    $return = 0;
+	    $query = array();
+	    
+	    $sql = 'SELECT COUNT(m_seq) as totalcount FROM menu WHERE p_use =\'Y\' ';
+	    
+	    if ( ! empty($data['search']) ) {
+	        $sql .= ' AND (p_name LIKE ? OR p_parent LIKE ? )';
+	        array_push($query, '%' . $data['search'] . '%', '%' . $data['search'] . '%' );
+	    }
+	    
+	    $query = $this->db->query($sql, $query);
+	    
+	    if ( ! empty($query) ) {
+	        $row = $query->row();
+	        $return = $row->totalcount;
+	    }
+	    
+	    return $return;
+	}
+	
 	
 	// 게시판 입력 저장
 	public function add($data = array())
