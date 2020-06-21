@@ -26,19 +26,30 @@ class Order_m extends CI_Model
 		return $return;
 	}
 	
-// 사용자 정보 조회 	
-	public function get($data = array())
+//  vue.js 테스트 
+	public function vue_test($data = array())
 	{
-	    
-	    $this->db->select('idx,  id, pw , u_name, u_email, u_phone , u_delete');
-	    $query = $this->db->get_where('tb_member', array('idx' => $data['idx']));
+	    $datacount = 0;
+	    $this->db->select('b_subject, b_name , b_idx');
+	    $query = $this->db->get('board_notice');
 	    
 	    if ( ! empty($query) && $query->num_rows() > 0 ) {
+	        /*foreach ($query->result_array() as $row)
+	        {
+	            $return = $row['b_subject'];
+	            $return = $row['b_name'];
+	            $return = $row['b_idx'];
+	        }*/
+	      //  $return = $query->result_array();
+	      //  $return = (array) $return;
 	        $return = $query->row_array();
 	    } else {
 	        $return = array() ;
 	    }
-	    
+	    //$return = json_encode($return);
+	 //  echo "<pre>";
+	   // print_r($return);
+	  // exit;
 	    return $return;
 	}
 	

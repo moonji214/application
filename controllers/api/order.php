@@ -50,7 +50,16 @@ class Order extends CI_Controller
 	    echo json_encode($return);
 	}
 	
-	
+	// vue.js 테스트
+	public function vue_test($m_seq=0)
+	{
+	    $data['m_seq'] = $m_seq;
+	    $return = $this->order->vue_test($data);
+	   // print_R($return);
+	   // exit;
+	    echo json_encode($return);
+	    //echo json_decode($return);
+	}
 	
 	
 }
