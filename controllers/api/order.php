@@ -55,10 +55,10 @@ class Order extends CI_Controller
 	{
 	    $data['m_seq'] = $m_seq;
 	    $return = $this->order->vue_test($data);
-	   // print_R($return);
+	   //print_R($return);
 	   // exit;
 	    echo json_encode($return);
-	    //echo json_decode($return);
+	   
 	}
 	
 	

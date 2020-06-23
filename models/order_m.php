@@ -34,22 +34,12 @@ class Order_m extends CI_Model
 	    $query = $this->db->get('board_notice');
 	    
 	    if ( ! empty($query) && $query->num_rows() > 0 ) {
-	        /*foreach ($query->result_array() as $row)
-	        {
-	            $return = $row['b_subject'];
-	            $return = $row['b_name'];
-	            $return = $row['b_idx'];
-	        }*/
-	      //  $return = $query->result_array();
-	      //  $return = (array) $return;
-	        $return = $query->row_array();
+	        $return = $query->result_array();
+	        //$return = $query->row_array();
 	    } else {
 	        $return = array() ;
 	    }
-	    //$return = json_encode($return);
-	 //  echo "<pre>";
-	   // print_r($return);
-	  // exit;
+	   
 	    return $return;
 	}
 	

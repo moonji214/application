@@ -29,10 +29,10 @@
 												</thead>
 												<tbody>	
 												
-													<tr v-for="post in posts">
-														<td>{{post.b_idx}} </td>
-														<td>{{post.b_name}} </td>
-														<td>{{post.b_subject}} </td>
+													<tr v-for="contact in contacts">
+														<td>{{contact.b_idx}} </td>
+														<td>{{contact.b_name}} </td>
+														<td>{{contact.b_subject}} </td>
 													</tr>	
 																				
 												</tbody>
@@ -40,43 +40,61 @@
 											
 										</div>
 									</div>
-	
-	<!--  <div v-for="post in posts">
-		<h3>{{post.b_idx}}</h3>
-		<p> {{post.b_name}}</p>
-		<p> {{post.b_subject}}</p>
-	</div>-->
+
 </div>				
 </section>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>	
-<script src="https://unpkg.com/vue"></script>
-<script type="text/javascript">
-var wm = new Vue({
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>	
+ <script src="https://unpkg.com/vue"></script>-->
+
+<script>
+var app = new Vue({
 	el : "#app",
 	data : {
-		posts  : []
+		b_idx: '',
+		b_name: '',
+		b_subject: '',
+	    contacts: []
 	},
-	created() {
-		//fetch('https://jsonplaceholder.typicode.com/posts/1')
-		 fetch('/api/order/vue_test')
-			.then((response) => {
-				if(response.ok){
-					return response.json();
+	 mounted: function () {
+		    //console.log('Hello from Vue!')
+		    this.getContacts()
+		  },
+
+		  methods: {
+		    //getContacts: function(){
+		    //},
+			  getContacts: function(){
+				    axios.get('/api/order/vue_test')
+				    .then(function (response) {
+				        console.log(response.data);
+				        app.contacts = response.data;
+
+				    })
+				    .catch(function (error) {
+				        console.log('에러입니다.');
+				    });
 				}
-				throw new error('네트워크 에러');
-			})
-			.then((json) => {
-				this.posts.push({
-					b_idx: json.b_idx,
-					b_name: json.b_name,
-					b_subject: json.b_subject,
-				});
-			})
-			.catch((error ) =>{
-				console.log(error);
-			});
-	}
-		
+
+		    
+		   // createContact: function(){
+		   // },
+		  //  resetForm: function(){
+		  //  }
+		  }
+
+});
+
+
+$(function () {
+	
+	$('#member-list tbody').on('mouseover', 'td', function(){
+		$(this).parent().addClass('highlight');
+	}).on('mouseleave', 'td', function(){
+		$(this).parent().removeClass('highlight');
+	});
 	
 });
+
 </script>
